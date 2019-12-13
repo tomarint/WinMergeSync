@@ -48,6 +48,12 @@ namespace WinMergeSync {
         public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass, string lpszWindow);
 
         //---------------------------------------------------------------
+        // IsWindow
+        //---------------------------------------------------------------
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int IsWindow(IntPtr hWnd);
+
+        //---------------------------------------------------------------
         // SendMessage / PostMessage
         //---------------------------------------------------------------
         [DllImport("user32.dll", CharSet = CharSet.Auto)]

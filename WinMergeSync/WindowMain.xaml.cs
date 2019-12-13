@@ -52,15 +52,51 @@ namespace WinMergeSync {
             }
         }
 
-        private void ButtonPrev_Click(object sender, RoutedEventArgs e) {
+        private List<IntPtr> windowlist = new List<IntPtr>();
+        private bool IsAlive() {
+            if (this.windowlist.Count() == 0) {
+                return false;
+            }
+            foreach (IntPtr hWnd in this.windowlist) {
+                if (Win32.IsWindow(hWnd) == 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void RescanWindows() {
+            var ret = new List<IntPtr>();
             foreach (IntPtr hWnd in this.WinMergeWindows(false)) {
+                ret.Add(hWnd);
+            }
+            this.windowlist = ret;
+        }
+
+        private void ButtonPrev_Click(object sender, RoutedEventArgs e) {
+            if (!this.IsAlive()) {
+                this.RescanWindows();
+            }
+            foreach (IntPtr hWnd in this.windowlist) {
                 Win32.SendMessage(hWnd, Win32.WM_COMMAND, new UIntPtr(0x18040), new UIntPtr(0));
             }
         }
+
         private void ButtonNext_Click(object sender, RoutedEventArgs e) {
-            foreach (IntPtr hWnd in this.WinMergeWindows(false)) {
+            if (!this.IsAlive()) {
+                this.RescanWindows();
+            }
+            foreach (IntPtr hWnd in this.windowlist) {
                 Win32.SendMessage(hWnd, Win32.WM_COMMAND, new UIntPtr(0x18041), new UIntPtr(0));
             }
+        }
+
+        private void ButtonReload_Click(object sender, RoutedEventArgs e) {
+            this.RescanWindows();
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e) {
+            this.Close();
         }
     }
 }
