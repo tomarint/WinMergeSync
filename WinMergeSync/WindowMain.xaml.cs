@@ -96,7 +96,10 @@ namespace WinMergeSync {
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e) {
-            this.Close();
+            this.RescanWindows();
+            foreach (IntPtr hWnd in this.windowlist) {
+                Win32.SendMessage(hWnd, Win32.WM_CLOSE, new UIntPtr(0), new UIntPtr(0));
+            }
         }
     }
 }

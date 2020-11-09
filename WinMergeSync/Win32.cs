@@ -63,6 +63,7 @@ namespace WinMergeSync {
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, UIntPtr wParam, UIntPtr lParam);
 
+        public static uint WM_CLOSE = 0x0010;
         public static uint WM_KEYDOWN = 0x0100;
         public static uint WM_KEYUP = 0x0101;
         public static uint WM_CHAR = 0x0102;
